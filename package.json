@@ -1,0 +1,36 @@
+{
+   "name": "mixr",
+   "version": "0.0.1",
+   "description": "Mixr, is a compiler and pre-processor for your Javascript and CSS.",
+   "keywords": [
+       "mixr",
+       "css",
+       "js",
+       "compiler",
+       "pre-processor"
+   ],
+   "dependencies": {
+     "async": ">= 0.1.15",
+     "underscore": ">= 1.2.3"
+   },
+   "devDependencies": {
+     "vows": ">= 0.0.1"
+   },
+   "maintainers": [
+       {
+         "name": "Alex Barlow",
+         "email": "alexbarlowis@gmail.com",
+         "web": "http://www.alexrbarlow.com"
+       } 
+   ],
+   "repositories": [
+       {
+           "type": "git",
+           "url": "https://arbarlow@github.com/arbarlow/mixr.git" 
+       } 
+   ],
+   "main" : "lib/index",
+   "directories": {
+       "lib": "lib"
+   } 
+}
