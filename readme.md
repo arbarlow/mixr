@@ -1,6 +1,6 @@
 # Mixr
 
-Mixr, is a compiler and pre-processor for your Javascript and CSS.
+Mixr, is a Node.JS compiler and pre-processor for your Javascript and CSS.
 
 In your layout you might have something like the following..
 
