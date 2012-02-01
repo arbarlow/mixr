@@ -14,7 +14,7 @@
      "underscore": ">= 1.2.3"
    },
    "devDependencies": {
-     "vows": ">= 0.0.1"
+     "jasmine-node": ">= 0.0.1"
    },
    "maintainers": [
        {
