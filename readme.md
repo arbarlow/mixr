@@ -46,6 +46,14 @@ $(function(){
 
 When you require something, it is looked for in the same directory, but you can also specify a path..
 
+# Production/Deployment
+
+Although Mixr is very fast at generating the output files, it is just a waste of CPU etc to generate the assets on every request.
+
+Therefor in production mode, it is recommended to generate the assets to a public folder and have either Nginx, Node, etc to server them normally..
+
+Mixr will come with a command line utility to perform this task in future, probably with S3 upload ability..
+
 # Future
 
 Mixr is designed to be quite modular, in the future, planned I have the following.
