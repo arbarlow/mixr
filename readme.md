@@ -2,6 +2,9 @@
 
 Mixr, is a Node.JS compiler and pre-processor for your Javascript and CSS.
 
+
+[![Build Status](https://secure.travis-ci.org/arbarlow/mixr.png)](http://travis-ci.org/arbarlow/mixr)
+
 In your layout you might have something like the following..
 
 ``` html
