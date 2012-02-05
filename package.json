@@ -32,5 +32,8 @@
    "main" : "lib/index",
    "directories": {
        "lib": "lib"
-   } 
+   },
+   "scripts": {
+     "test": "jasmine-node test"
+   }
 }
