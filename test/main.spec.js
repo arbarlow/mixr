@@ -31,6 +31,23 @@ describe("Mixr", function() {
     expect(output).toEqual(['require', 'defaults.css.less'])
   });
   
+  it("Should parse CSS headers correctly with a file path", function() {
+    var output = Mixr.parseHeader("*= require ./someplace/defaults.css.less");
+    expect(output).toEqual(['require', './someplace/defaults.css.less'])
+  });
+  
+  it("Should parse CSS headers correctly with a non local file path", function() {
+    var output = Mixr.parseHeader("*= require someplace/defaults.css.less");
+    expect(output).toEqual(['require', 'someplace/defaults.css.less'])
+  });
+  
+  it("Should be able to require a normal file", function(done) {
+    Mixr.require("main.css", function(output, err) {
+      expect(output).toBe("body{background-color: #000;}");
+      done(err);
+    });
+  });
+  
   it("Should output one whole file if given an array of files", function(done) {
     var files = ['./test/assets/concat_test/1', './test/assets/concat_test/2', './test/assets/concat_test/3'];
     Mixr.read_and_concatenate_files(files, function(output, err) {
