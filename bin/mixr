@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+var fs = require('fs');
+var path = require('path');
+var Mixr = require('../lib');
+
+if( !process.env.NODE_ENV ) process.env.NODE_ENV = 'production';
+
+if (process.argv[2] && process.argv[3]) {
+  Mixr.overide_options({
+    css_base_file: process.argv[2],
+    js_base_path: process.argv[3]
+  });
+};
+
+var public_dir = './public';
+var css_path = Mixr.css_base_path.replace("assets", "public");
+var js_path = Mixr.js_base_path.replace("assets", "public");
+
+public_path_exists = path.existsSync(public_dir);
+if (!public_path_exists) {
+  console.log('Making dir ' + public_dir);
+  fs.mkdirSync(public_dir);
+};
+
+css_path_exists = path.existsSync(css_path);
+if (!css_path_exists) {
+  console.log('Making dir ' + css_path);
+  fs.mkdirSync(css_path);
+};
+
+js_path_exists = path.existsSync(js_path);
+if (!js_path_exists) {
+  console.log('Making dir ' + js_path);
+  fs.mkdirSync(js_path);
+};
+
+
+Mixr.parse_and_process_base_file(Mixr.css_base_file, function(output, err) {
+  if(err) {
+    console.log(err)
+  }else{
+    fs.writeFile(public_dir + Mixr.css_url, output, function (err) {
+      if (err) console.log(err);
+      console.log(Mixr.css_url + " saved.");
+    });
+  };
+});
+
+Mixr.parse_and_process_base_file(Mixr.js_base_file, function(output, err) {
+  if(err) {
+    console.log(err)
+  }else{
+    fs.writeFile(public_dir + Mixr.js_url, output, function (err) {
+      if (err) console.log(err);
+      console.log(Mixr.js_url + " saved.");
+    });
+  };
+});

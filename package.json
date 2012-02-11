@@ -35,6 +35,9 @@
    "directories": {
      "lib": "lib"
    },
+   "bin": {
+       "mixr": "bin/mixr"
+   },
    "scripts": {
      "test": "jasmine-node test"
    }
