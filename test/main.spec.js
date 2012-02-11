@@ -62,6 +62,13 @@ describe("Mixr", function() {
     });
   });
   
+  it("Should be able to require and compile a coffeescript file", function(done) {
+    Mixr.require("./main.js.coffee", function(output, err) {
+      expect(output).toBe("(function() {\n  var number, opposite;\n\n  number = 42;\n\n  opposite = true;\n\n  if (opposite) number = -42;\n\n}).call(this);\n");
+      done(err);
+    });
+  });
+  
   it("Should output one whole file if given an array of files", function(done) {
     var files = ['./test/assets/concat_test/1', './test/assets/concat_test/2', './test/assets/concat_test/3'];
     Mixr.read_and_concatenate_files(files, function(output, err) {

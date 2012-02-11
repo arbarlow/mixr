@@ -15,7 +15,8 @@
    },
    "devDependencies": {
      "jasmine-node": ">= 0.0.1",
-     "less": ">= 0.0.1"
+     "less": ">= 0.0.1",
+     "coffee-script": ">= 0.0.1"
    },
    "maintainers": [
      {
