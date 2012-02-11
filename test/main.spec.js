@@ -48,6 +48,20 @@ describe("Mixr", function() {
     });
   });
   
+  it("Should be able to require a normal file with a local ./", function(done) {
+    Mixr.require("./main.css", function(output, err) {
+      expect(output).toBe("body{background-color: #000;}");
+      done(err);
+    });
+  });
+  
+  it("Should be able to require and compile a less file", function(done) {
+    Mixr.require("./main.css.less", function(output, err) {
+      expect(output).toBe("#header {\n  color: #4d926f;\n}\n");
+      done(err);
+    });
+  });
+  
   it("Should output one whole file if given an array of files", function(done) {
     var files = ['./test/assets/concat_test/1', './test/assets/concat_test/2', './test/assets/concat_test/3'];
     Mixr.read_and_concatenate_files(files, function(output, err) {
