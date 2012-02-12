@@ -1,58 +1,92 @@
 #!/usr/bin/env node
 var fs = require('fs');
 var path = require('path');
+var _ = require('underscore')._;
 var Mixr = require('../lib');
 
 if( !process.env.NODE_ENV ) process.env.NODE_ENV = 'production';
 
-if (process.argv[2] && process.argv[3]) {
-  Mixr.overide_options({
-    css_base_file: process.argv[2],
-    js_base_path: process.argv[3]
+if (process.argv[2] == 'init') {
+  console.log('Preparing project..');
+  
+  var folders = ['./assets', './assets/css', './assets/js'];
+  
+  _.each(folders, function(folder){
+    var folder_exists = path.existsSync(folder);
+    if (!folder_exists) {
+      console.log('Making ' + folder);
+      fs.mkdirSync(folder);
+    };
   });
-};
+  
+  var files = [
+    {filepath: './assets/css/app.css', contents: '/*\n*= require main.css\n*/'},
+    {filepath: './assets/css/main.css', contents: 'body{\n\n}'},
+    
+    {filepath: './assets/js/app.js', contents: '//= require main.js'},
+    {filepath: './assets/js/main.js', contents: '//$(function(){\n  // do something..\n//});'}
+  ];
+  
+  _.each(files, function(file){
+    var file_exists = path.existsSync(file.filepath);
+    if (!file_exists) {
+      console.log('Making file ' + file.filepath);
+      fs.writeFileSync(file.filepath, file.contents);
+    };
+  });
 
-var public_dir = './public';
-var css_path = Mixr.css_base_path.replace("assets", "public");
-var js_path = Mixr.js_base_path.replace("assets", "public");
-
-public_path_exists = path.existsSync(public_dir);
-if (!public_path_exists) {
-  console.log('Making dir ' + public_dir);
-  fs.mkdirSync(public_dir);
-};
-
-css_path_exists = path.existsSync(css_path);
-if (!css_path_exists) {
-  console.log('Making dir ' + css_path);
-  fs.mkdirSync(css_path);
-};
-
-js_path_exists = path.existsSync(js_path);
-if (!js_path_exists) {
-  console.log('Making dir ' + js_path);
-  fs.mkdirSync(js_path);
-};
-
-
-Mixr.parse_and_process_base_file(Mixr.css_base_file, function(output, err) {
-  if(err) {
-    console.log(err)
-  }else{
-    fs.writeFile(public_dir + Mixr.css_url, output, function (err) {
-      if (err) console.log(err);
-      console.log(Mixr.css_url + " saved.");
+}else if(process.argv[2] == 'compile'){
+  if (process.argv[2] && process.argv[3]) {
+    Mixr.overide_options({
+      css_base_file: process.argv[2],
+      js_base_path: process.argv[3]
     });
   };
-});
 
-Mixr.parse_and_process_base_file(Mixr.js_base_file, function(output, err) {
-  if(err) {
-    console.log(err)
-  }else{
-    fs.writeFile(public_dir + Mixr.js_url, output, function (err) {
-      if (err) console.log(err);
-      console.log(Mixr.js_url + " saved.");
-    });
+  var public_dir = './public';
+  var css_path = Mixr.css_base_path.replace("assets", "public");
+  var js_path = Mixr.js_base_path.replace("assets", "public");
+
+  public_path_exists = path.existsSync(public_dir);
+  if (!public_path_exists) {
+    console.log('Making dir ' + public_dir);
+    fs.mkdirSync(public_dir);
   };
-});
+
+  css_path_exists = path.existsSync(css_path);
+  if (!css_path_exists) {
+    console.log('Making dir ' + css_path);
+    fs.mkdirSync(css_path);
+  };
+
+  js_path_exists = path.existsSync(js_path);
+  if (!js_path_exists) {
+    console.log('Making dir ' + js_path);
+    fs.mkdirSync(js_path);
+  };
+
+
+  Mixr.parse_and_process_base_file(Mixr.css_base_file, function(output, err) {
+    if(err) {
+      console.log(err)
+    }else{
+      fs.writeFile(public_dir + Mixr.css_url, output, function (err) {
+        if (err) console.log(err);
+        console.log(Mixr.css_url + " saved.");
+      });
+    };
+  });
+
+  Mixr.parse_and_process_base_file(Mixr.js_base_file, function(output, err) {
+    if(err) {
+      console.log(err)
+    }else{
+      fs.writeFile(public_dir + Mixr.js_url, output, function (err) {
+        if (err) console.log(err);
+        console.log(Mixr.js_url + " saved.");
+      });
+    };
+  });
+}else{
+  console.log('There is default command!\nperhaps you want init (setups up a project) or compile (outputs compiled assets to ./public)?');
+};
