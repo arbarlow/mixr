@@ -1,7 +1,7 @@
 {
    "name": "mixr",
    "version": "0.0.1",
-   "description": "Mixr, is a compiler and pre-processor for your Javascript and CSS.",
+   "description": "Mixr, is a compiler (Express compatible) and pre-processor for your Javascript and CSS.",
    "keywords": [
      "mixr",
      "css",

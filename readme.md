@@ -1,53 +1,103 @@
 # Mixr
 
-Mixr, is a Node.JS compiler and pre-processor for your Javascript and CSS.
-
+Mixr, is a Node.JS compiler and pre-processor for your Javascript and CSS (compatible with Express.js).
 
 [![Build Status](https://secure.travis-ci.org/arbarlow/mixr.png)](http://travis-ci.org/arbarlow/mixr)
 
-In your layout you might have something like the following..
+Mixr will take the file you ask it to and output them in to a single file, compiling any Less or CoffeeScript files given..
 
-``` html
-<link rel="stylesheet" href="/css/app.css" type="text/css" charset="utf-8">
-<script src="/js/app.js" type="text/javascript" charset="utf-8"></script>
+
+## Installation and setup
+
+Lets say that you've just created a new Express app using command like the following..
+
+``` bash
+express music_library -t ejs 
+cd music_library && npm install
 ```
 
-If you are using express, you would configure your app and add Mixr's routes
+Add Mixr to your package.json file..
 
 ``` javascript
-var Mixr = require('mixr');
+  "mixr": ">= 0.0.1"
+```
 
+To create the default files and folders for Mixr, run the following..
+
+``` bash
+./node_modules/mixr/bin/mixr init
+```
+
+If you dont want Express.js' old javascripts and stylesheet, remove them..
+
+``` bash
+rm -R public/javascripts/ && rm -R public/stylesheets/
+```
+
+You would then open app.js and require Mixr..
+
+``` javascript
+  var Mixr = require('mixr');
+```
+
+Add Mixr's helpers to the configuration
+
+``` javascript
+// Configuration
+app.configure(function(){
+  Mixr.addHelpers(app);
+});
+```
+
+To serve and compile assets on the fly in development mode, you need add the following line..
+
+``` javascript
 app.configure('development', function(){
+  // Add Mixr routes for development mode only
   Mixr.addExpressRoutes(app);
 });
 ```
 
-Then, by default, Mixr will look for ./assets/css/app.css, ./assets/js/app.js and render that file using a syntax similar to sprockets
+In your layout add Mixr's routes..
 
-in app.css ..
+``` html
+<link rel="stylesheet" href="<%= css_path %>" type="text/css" charset="utf-8">
+<script src="<%= js_path %>" type="text/javascript" charset="utf-8"></script>
+```
+
+# Usage
+
+Now, you should have four files.
+
+./assets/css/app.css
+./assets/css/main.css
+./assets/css/app.js
+./assets/css/main.js
+
+If you look inside app.css you should see the following..
 
 ``` css
 /*
-*= require bootstrap.min.css
+*= require main.css
 */
-
-body {
-  background-color: #000;
-}
 ```
 
-in app.js ..
+This is because Mixr looks at app.css and app.js and uses them as a manifest of which files to get, note that any code in these files, will not in the end result!
+
+You can now require single files of different types and formats, as long as they exist, Mixr should know how to handle them!
+
+``` css
+/*
+*= require main.css
+*= require forms.css.less
+*/
+```
 
 ``` javascript
-//= require jquery.min.js
-
-$(function(){
-  // do something..
-});
-
+//= require lib/jquery.min.js
+//= require main.js
+//= require something.js.coffee
 ```
-
-When you require something, it is looked for in the same directory, but you can also specify a path..
 
 # Production/Deployment
 
@@ -55,12 +105,17 @@ Although Mixr is very fast at generating the output files, it is just a waste of
 
 Therefor in production mode, it is recommended to generate the assets to a public folder and have either Nginx, Node, etc to server them normally..
 
-Mixr will come with a command line utility to perform this task in future, probably with S3 upload ability..
+To do this, run the following command on a deploy..
+
+``` bash
+./node_modules/mixr/bin/mixr compile
+```
+
+This should output your app.css and app.js to ./public
 
 # Future
 
-Mixr is designed to be quite modular, in the future, planned I have the following.
+Mixr is designed to be quite modular, in the future, planned I might have the following.
 
-* Expanded files in development mode for easier debugging
 * Integrating images and generating cacheable images, including inputting base64 input css.
-* Allow any kind of processor to be done to a file, by using file extensions
+* Generating cacheable file names
